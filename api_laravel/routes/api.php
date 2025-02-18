@@ -10,8 +10,6 @@ Route::get('/noticias/{id}', [NoticiaController::class, 'show']);
 
 Route::post('/noticias', [NoticiaController::class, 'store']);
 
-Route::put('/noticias/{id}', function(){
-    return "actualizando noticias";  
-});
+Route::put('/noticias/{id}', [NoticiaController::class, 'update']);
 
 Route::delete('/noticias/{id}', [NoticiaController::class, 'destroy']);

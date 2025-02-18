@@ -105,4 +105,44 @@ class NoticiaController extends Controller
         ];
         return response()->json($data, 200);
     }
+
+    public function update(Request $request, $id){
+        $noticia = Noticia::find($id);
+
+        if(!$noticia){
+            $data = [
+                'message' => 'No se encontro la noticia',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required',
+            'autor' => 'required',
+            'descripcion' =>'required',
+        ]);
+
+        if($validator->fails()) {
+            $data = [
+                'message' => 'Error en la validacion de datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
+        }
+
+        $noticia->titulo = $request->titulo;
+        $noticia->autor = $request->autor;
+        $noticia->descripcion = $request->descripcion;
+
+        $noticia->save();
+
+        $data = [
+            'message' => 'actualizado correctamente',
+            'noticia' => $noticia,
+            'status' => 200
+        ];
+        return response()->json($data, 200);
+    }
 }
